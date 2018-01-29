@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+
+ web:
+  build: ./apache2
+  volumes:
+   - ${SOURCE_PATH}:/var/www/html
+  expose:
+   - ${APACHE_LISTEN_PORT}
+  ports:
+   - ${APACHE_EXTERNAL_PORT}:${APACHE_LISTEN_PORT}
+ db:
+  build: ./mariadb
+  environment:
+   - MYSQL_ROOT_PASSWORD:${MYSQL_ROOT_PASSWORD}
+  volumes:
+   - ${MYSQL_DATA_FOLDER}:/var/lib/mysql
+ phpmyadmin:
+  build: ./phpmyadmin
+  environment:
+   - PMA_HOST:${PMA_HOST}
+   - PMA_PORT:${PMA_PORT}
+  expose:
+   - ${PHPMYADMIN_LISTEN_PORT}
+  ports:
+   - ${PHPMYADMIN_EXTERNAL_PORT}:${PHPMYADMIN_LISTEN_PORT}
+
+
